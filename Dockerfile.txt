@@ -1,0 +1,16 @@
+FROM php:8.2-apache
+
+# Instala as extensões necessárias
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    unzip \
+    git \
+    && docker-php-ext-install pgsql pdo_pgsql
+
+# Copia o código do Moodle
+COPY . /var/www/html/
+RUN chown -R www-data:www-data /var/www/html
+
+# Expõe a porta 80
+EXPOSE 80
+CMD ["apache2-foreground"]
